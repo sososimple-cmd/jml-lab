@@ -6,7 +6,7 @@ Purpose:
 Synchronize employee department-based access between
 OrangeHRM and Authentik.
 
-This script identifies department changes, assigns the
+This script identifies department access discrepancies, assigns the
 appropriate access group, and removes outdated department
 memberships to enforce least-privilege access.
 
