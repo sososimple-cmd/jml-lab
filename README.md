@@ -92,7 +92,10 @@ I verified that OrangeHRM and Authentik were synchronized.
 
 **Important edge case:** Re-enabling a returning account does **not** automatically restore previously removed department groups. That requires the mover.
 
-![Joiner execution — screenshot placeholder](screenshots/02-joiner-output.png)
+<img width="958" height="708" alt="Screenshot 2026-10-10 102600" src="https://github.com/user-attachments/assets/c9268010-2e16-4c93-a76e-5e3187cac7c6" />
+<img width="978" height="363" alt="Screenshot 2026-10-10 102623" src="https://github.com/user-attachments/assets/8b192590-87e9-4840-bb88-412d6c210bc1" />
+
+
 
 ### 2. Mover — least-privilege department access
 
