@@ -128,9 +128,15 @@ The corrected script was run, and Illyana's old X-Men access was removed.
 
 ![Actual HR vs Identity screenshot: Illyana has both dept-x-men and dept-defenders](screenshots/03-mover-finding.png)
 
-![Corrected mover code — screenshot placeholder](screenshots/04-mover-code-fix.png)
+**Figure 1 — Access Creep Identified** 
+Illyana Rasputin retained membership in both her previous X-Men department and her new Defenders department.
 
-![Mover execution — screenshot placeholder](screenshots/05-mover-output.png)
+ <img width="915" height="774" alt="Screenshot 2026-10-10 102718" src="https://github.com/user-attachments/assets/7617b9da-682a-45c4-b3b7-0fc08a89b027" />
+
+ **Figure 2 — Python Root Cause and Correction**
+ 
+<img width="878" height="391" alt="Screenshot 2026-10-10 103422" src="https://github.com/user-attachments/assets/9d92dac1-cbd0-4e6f-86b7-c6ee973d76fc" />
+
 
 ### 3. Leaver — timely access revocation
 
@@ -138,7 +144,8 @@ The corrected script was run, and Illyana's old X-Men access was removed.
 
 In this scenario, Billy Kaplan was terminated in OrangeHRM and required corresponding offboarding in Authentik.
 
-![Leaver execution — screenshot placeholder](screenshots/06-leaver-output.png)
+<img width="906" height="719" alt="Screenshot 2026-10-10 102830" src="https://github.com/user-attachments/assets/8eebafda-75c5-4890-8e31-c6576075988f" />
+
 
 ### 4. Rehire — an intentional two-script workflow
 
@@ -149,74 +156,222 @@ Jessica Jones was previously terminated, so her identity existed but was disable
 
 This exercise demonstrates why **account state** and **authorization/group state** are separate lifecycle concerns.
 
-## Validation and evidence
 
-The capstone guide's expected final checkpoint is **13 rows / 0 findings** after all three scripts run, assuming the standard lab baseline and no extra test accounts.
+## Validation and Evidence
 
-**Verify this against your live dashboard before claiming completion:** record your observed numbers in [`docs/VALIDATION_LOG.md`](docs/VALIDATION_LOG.md), then replace the screenshot below with the final dashboard capture.
+### Final Identity Reconciliation Results
 
-![Final reconciliation dashboard — screenshot placeholder](screenshots/07-final-dashboard.png)
+Successfully implemented and validated Python-based Joiner-Mover-Leaver (JML) workflows integrating OrangeHRM and Authentik within a simulated enterprise IAM environment.
 
-### Acceptance checks
+The objective was to ensure employee identities, account statuses, and department-based access permissions remained synchronized with HR records.
 
-- [ ] Sam Wilson is active and a member of `dept-avengers`.
-- [ ] Carol Danvers is active and a member of `dept-cosmic-division`.
-- [x] Illyana Rasputin no longer retains `dept-x-men` after moving to Defenders.
-- [ ] Billy Kaplan is disabled with department groups removed.
-- [ ] Jessica Jones is re-enabled and assigned `dept-defenders`.
-- [ ] Dashboard has **0 findings** (verify actual row count).
-- [ ] Screenshots and updated scripts have been uploaded.
+### Validation Summary
 
-The unchecked boxes intentionally distinguish **expected outcomes** from the evidence that still needs to be recorded in this repository.
+| Validation Stage | Employee Records | IAM Findings | Result |
+|---|---|---|---|
+| Initial baseline | 11 | 0 | Passed |
+| After HR lifecycle changes | 13 | 3 | Discrepancies identified |
+| After JML automation | 13 | 0 | Passed |
 
-## What I learned
+**Final Result: 13 employee records reconciled with zero outstanding identity findings.**
 
-- **HR-driven IAM:** Employment status and organizational assignments should drive downstream identity changes.
-- **RBAC and least privilege:** Grant access that matches a person's current responsibilities, and remove outdated access promptly.
-- **Troubleshooting Python automation:** A minor indentation error can leave stale permissions behind while other updates appear to succeed.
-- **Rehire complexity:** Re-enabling an account and regranting appropriate access are separate operations.
-- **Validation before and after:** Baseline checks, predictions, script outputs, and reconciliation results are all part of demonstrating a reliable workflow.
+### Verified Lifecycle Changes
 
-## Future improvements
+| Employee | Lifecycle Event | Validated Result |
+|---|---|---|
+| Sam Wilson | Joiner | Account active; assigned `dept-avengers` |
+| Carol Danvers | Joiner | Account active; assigned `dept-cosmic-division` |
+| Illyana Rasputin | Mover | Old X-Men access removed; Defenders access retained |
+| Billy Kaplan | Leaver | Account disabled; department access removed |
+| Jessica Jones | Rehire | Account reactivated; Defenders access restored |
 
-1. **Scheduled reconciliation:** Move beyond manually running the scripts to routine or event-driven checks.
-2. **Auditability:** Add structured logging with timestamps, employee identifiers, actions, and outcomes (without logging credentials).
-3. **Safer entitlement scoping:** Limit automatic group removal to department groups explicitly managed by this workflow.
-4. **Exception handling and testing:** Introduce retry handling, dry-run mode, and tests for terminations, rehires, and unusual group configurations.
-5. **Alerting:** Surface unresolved discrepancies to the IAM operations team for review.
+### Final Dashboard Evidence
 
-## Repository structure
+The following screenshot documents the completed HR-to-identity reconciliation after executing the Joiner, Mover, and Leaver automation workflows.
 
-```text
-jml-lab/
-├── README.md                    # This portfolio overview
-├── SETUP.md                     # Step-by-step upload and customization guide
-├── .gitignore                   # Excludes secrets and local artifacts
-├── scripts/
-│   ├── README.md                # Where to place downloaded lab scripts
-│   ├── joiner.py                # Add YOUR downloaded file
-│   ├── mover.py                 # Add YOUR corrected downloaded file
-│   └── leaver.py                # Add YOUR downloaded file
-├── screenshots/
-│   ├── 01-hr-changes-board.png  # Replace labeled placeholder
-│   ├── 02-joiner-output.png
-│   ├── 03-mover-finding.png
-│   ├── 04-mover-code-fix.png
-│   ├── 05-mover-output.png
-│   ├── 06-leaver-output.png
-│   └── 07-final-dashboard.png
-└── docs/
-    ├── VALIDATION_LOG.md       # Expected vs. observed test outcomes
-    ├── EVIDENCE_GUIDE.md       # What screenshots to capture
-    └── INTERVIEW_NOTES.md      # Recruiter-ready project walkthrough
-```
+![Final IAM Dashboard - 13 Records and Zero Findings](https://github.com/user-attachments/assets/395f491a-7651-4f3a-8080-9cd518bf27c2)
 
-> **Running the project:** The lab-provided scripts use `jml_common`, hosted service connections, and credentials supplied by the learning environment. This repository documents the work and shares authorized script code, but it does **not** publish tokens, passwords, or infrastructure configuration needed to independently run the hosted lab.
+**Figure: Final IAM reconciliation showing 13 employee records, zero outstanding findings, and validated department-based group memberships.**
 
-## Interview-ready summary
+### Acceptance Checks
 
-> “I built and tested HR-driven Joiner–Mover–Leaver automation using Python, OrangeHRM, and Authentik. I simulated hires, a department transfer, a termination, and a rehire. During testing, I detected access creep, traced the issue to a Python indentation error, corrected the mover logic, and verified the outdated entitlement was removed.”
+- [x] Sam Wilson is active and assigned to `dept-avengers`.
+- [x] Carol Danvers is active and assigned to `dept-cosmic-division`.
+- [x] Illyana Rasputin no longer retains `dept-x-men` after transferring to Defenders.
+- [x] Billy Kaplan's account is disabled and department access removed.
+- [x] Jessica Jones is reactivated and assigned `dept-defenders`.
+- [x] Final reconciliation confirms **13 records and 0 findings**.
+- [x] Python Joiner, Mover, and Leaver scripts uploaded to GitHub.
+- [x] Final IAM dashboard evidence captured.
+- [x] Mover access-creep issue investigated, corrected, and validated.
+
+
+
+### Security Outcomes
+
+The completed workflows demonstrated:
+
+- **Automated Provisioning:** Creation of new identity accounts based on HR records.
+- **RBAC Enforcement:** Department-based assignment of group memberships.
+- **Least-Privilege Access:** Removal of permissions no longer required after a department transfer.
+- **Identity Deprovisioning:** Disabling accounts and revoking access for terminated employees.
+- **Rehire Management:** Reactivating existing accounts and restoring appropriate access.
+- **Identity Reconciliation:** Validating consistency between HR employee data and identity accounts.
 
 ---
 
-**Credits:** Based on the *Your First Week as the IAM Admin* capstone from All Things Identity — IAM Career Launchpad. All employee examples are fictional training data.
+## What I Learned
+
+### 1. HR-Driven Identity Lifecycle Management
+
+Employee lifecycle events should drive downstream identity changes.
+
+Using OrangeHRM as the authoritative source demonstrated how HR records can support consistent identity provisioning, access modification, and deprovisioning.
+
+### 2. Least Privilege and Access Creep Prevention
+
+Department transfers require both granting new access and revoking outdated permissions.
+
+During testing, I discovered that Illyana Rasputin retained membership in both her previous X-Men department and her new Defenders department.
+
+This represented an access-creep risk.
+
+After identifying and correcting the issue in the Python Mover automation, I verified that the outdated group membership was removed.
+
+### 3. Python Automation Troubleshooting
+
+An indentation error in the Mover script caused the group-removal logic to execute outside the employee-processing loop.
+
+I investigated the script, corrected the control flow, reran the automation, and validated the remediation.
+
+This reinforced the importance of understanding Python control flow and testing automation outcomes rather than assuming successful execution guarantees correct access.
+
+### 4. Rehire Identity Management
+
+Reactivating an employee's identity does not automatically restore previously revoked permissions.
+
+The Jessica Jones rehire scenario required two coordinated processes:
+
+1. **Joiner:** Reactivate the existing identity account.
+2. **Mover:** Restore the appropriate department group membership.
+
+This demonstrated the importance of coordinating identity activation with access provisioning.
+
+### 5. Identity Reconciliation and Validation
+
+Successful IAM automation requires measurable validation.
+
+I evaluated the environment before and after HR changes, identified expected discrepancies, executed remediation workflows, and verified that the final identity state matched HR records.
+
+---
+
+## Future Engineering Improvements
+
+The following enhancements would strengthen the automation for enterprise use.
+
+### 1. Automated Reconciliation Scheduling
+
+Implement scheduled or event-driven synchronization to reduce manual execution and improve response times to HR lifecycle changes.
+
+### 2. Audit Logging and Traceability
+
+Introduce structured audit logs containing timestamps, employee identifiers, lifecycle events, actions performed, and execution outcomes.
+
+Sensitive information such as credentials and access tokens would be excluded from logs.
+
+### 3. Safer Entitlement Management
+
+Restrict automated group removal to department memberships explicitly managed by the JML workflow.
+
+This would prevent unrelated application, security, or privileged-access groups from being modified unintentionally.
+
+### 4. Error Handling and Automated Testing
+
+Implement:
+
+- API error handling and retry mechanisms.
+- Dry-run mode to preview proposed access changes.
+- Unit and integration tests.
+- Validation of termination and rehire edge cases.
+- Safeguards against duplicate provisioning.
+
+### 5. Monitoring and Alerting
+
+Develop notifications for unresolved HR-to-identity discrepancies and failed provisioning or deprovisioning operations.
+
+---
+
+## Repository Structure
+
+```text
+jml-lab/
+|
+|-- README.md
+|   Main IAM engineering project overview
+|
+|-- SETUP.md
+|   Repository setup and customization documentation
+|
+|-- .gitignore
+|   Excludes credentials and local artifacts
+|
+|-- scripts/
+|   |-- README.md
+|   |-- joiner.py
+|   |-- mover.py
+|   |-- leaver.py
+|
+|-- screenshots/
+|   |-- 00-baseline-dashboard.png
+|   |-- 01-hr-changes-board.png
+|   |-- 02-joiner-output.png
+|   |-- 03-mover-finding.png
+|   |-- 04-mover-code-fix.png
+|   |-- 05-mover-output.png
+|   |-- 06-leaver-output.png
+|   |-- 07-final-dashboard.png
+|
+|-- docs/
+    |-- VALIDATION_LOG.md
+    |-- EVIDENCE_GUIDE.md
+    |-- INTERVIEW_NOTES.md
+```
+
+**Note:** The screenshot filenames represent the intended evidence structure. Any remaining placeholders should be replaced with actual lab captures or removed.
+
+### Execution Environment
+
+The Python automation was developed and tested in a hosted IAM training environment using OrangeHRM and Authentik.
+
+The scripts leverage the lab-provided `jml_common` helper module for HR and identity operations.
+
+The project includes implementation, troubleshooting, execution, and validation of identity lifecycle workflows using the provided lab framework.
+
+Independent execution requires the appropriate helper module, service connections, and environment configuration.
+
+Production credentials, API keys, and sensitive configuration information should not be committed to this repository.
+
+---
+
+## Interview-Ready Project Summary
+
+> "I implemented and tested Python-based Joiner-Mover-Leaver automation integrating OrangeHRM and Authentik in a simulated enterprise IAM environment. I automated employee provisioning, department-based access changes, account deprovisioning, and rehire workflows.
+>
+> During validation, I identified an access-creep issue where a transferred employee retained permissions from a previous department. I investigated the Python Mover script, identified an indentation error, corrected the group-removal logic, and verified that the outdated access was revoked.
+>
+> After executing the JML workflows, I successfully reconciled 13 employee records with zero outstanding identity findings."
+
+### Core Competencies Demonstrated
+
+**Python Automation | IAM Engineering | RBAC | Identity Provisioning | Identity Deprovisioning | Least Privilege | Access Creep Remediation | Root Cause Analysis | Identity Reconciliation**
+
+---
+
+### Project Context
+
+Hands-on IAM engineering project completed within the All Things Identity IAM Career Launchpad using a simulated enterprise environment.
+
+The work demonstrates practical experience implementing, troubleshooting, and validating identity lifecycle automation rather than a production deployment.
+
+
+
