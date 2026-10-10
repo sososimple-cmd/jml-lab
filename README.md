@@ -2,7 +2,7 @@
 
 **Hands-on IAM engineering project** · Joiner–Mover–Leaver (JML) · RBAC · HR-driven provisioning · Identity reconciliation
 
-Developed, executed, and troubleshot Python-based identity lifecycle workflows in a **simulated enterprise IAM environment**. The project aligns employee status and department assignments in OrangeHRM with account status and group membership in Authentik. It covers hiring, internal transfers, termination, and rehire—including the investigation and remediation of a real access-creep finding within the lab.
+Developed, executed, and troubleshot Python-based identity lifecycle workflows in a **simulated enterprise IAM environment**. The project aligns employee status and department assignments in OrangeHRM with account status and group membership in Authentik. It covers hiring, internal transfers, termination, and rehire—including the investigation and remediation of an observed access-creep finding within the lab.
 
 ## Results at a glance
 
@@ -68,6 +68,49 @@ Before executing scripts, I compared each HR change against the expected identit
 **After HR updates — 13 records, 3 findings.** The hires, transfer, termination, and rehire created the expected discrepancies before automation was executed.
 
 <img src="https://github.com/user-attachments/assets/338bdced-2a40-4828-804e-a0182c218939" alt="IAM dashboard after HR changes showing 13 rows and three findings" width="940" />
+
+### Employee profile evidence — OrangeHRM
+
+The following screenshots document the **HR-side records and lifecycle actions** that drove the identity automation. They complement the IAM dashboard and script output above; a profile screenshot alone does not verify provisioning or access revocation in Authentik.
+
+<details>
+<summary><strong>View employee profile evidence (7 screenshots)</strong></summary>
+
+#### New hire — Sam Wilson
+
+Sam's OrangeHRM job record shows his assigned **Avengers** subunit. The joiner workflow subsequently provisioned his identity and associated department access.
+
+<img src="screenshots/08-sam-wilson-profile.png" alt="OrangeHRM job profile for Sam Wilson showing Avengers subunit" width="900" />
+
+#### New hire — Carol Danvers
+
+Carol's OrangeHRM job record shows **Cosmic Division**, the source department for her identity group assignment.
+
+<img src="screenshots/09-carol-danvers-profile.png" alt="OrangeHRM job profile for Carol Danvers showing Cosmic Division subunit" width="900" />
+
+#### Department transfer — Illyana Rasputin
+
+Illyana's OrangeHRM job record shows her new **Defenders** subunit. Her access discrepancy and remediation are documented separately in the mover section.
+
+<img src="screenshots/10-illyana-rasputin-profile.png" alt="OrangeHRM job profile for Illyana Rasputin showing Defenders subunit" width="900" />
+
+#### Termination — Billy Kaplan
+
+The termination dialog shows the selected effective date and reason before submission; the subsequent job profile confirms Billy's **Past Employee** status.
+
+<img src="screenshots/13-billy-kaplan-termination-modal.png" alt="OrangeHRM Terminate Employment form for Billy Kaplan showing termination date and reason" width="900" />
+
+<img src="screenshots/11-billy-kaplan-terminated-profile.png" alt="OrangeHRM job profile for Billy Kaplan showing Past Employee status and termination date" width="900" />
+
+#### Rehire — Jessica Jones
+
+Jessica's record initially shows **Past Employee** and the **Activate Employment** action. The second screenshot shows her job profile after reactivation, without the Past Employee label. Her Authentik account and group restoration are verified in the final reconciliation dashboard.
+
+<img src="screenshots/12-jessica-jones-reactivation.png" alt="OrangeHRM job profile for Jessica Jones before rehire, with Past Employee status and Activate Employment button" width="900" />
+
+<img src="screenshots/14-jessica-jones-active-profile.png" alt="OrangeHRM job profile for Jessica Jones after rehire, showing Defenders department without Past Employee status" width="900" />
+
+</details>
 
 ## Automation implementation
 
@@ -139,7 +182,7 @@ Mover done.
 
 **[`leaver.py`](scripts/leaver.py)** identifies terminated employees, disables their Authentik accounts, and removes assigned department groups. This addresses the risk of former employees retaining active access.
 
-In the capstone, Billy Kaplan's HR termination was reconciled with a disabled account and no department memberships.
+In this scenario, Billy Kaplan's HR termination was reconciled with a disabled account and no department memberships.
 
 <details>
 <summary>Leaver workflow evidence</summary>
