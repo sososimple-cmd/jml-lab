@@ -64,7 +64,7 @@ The purpose was to recognize discrepancies before changing access:
 
 > The lab's expected checkpoint immediately after the five HR changes is **13 rows / 3 findings**; the two *No account yet* rows are not counted as findings. Extra pre-existing test accounts may change the row count.
 
-### Baseline — Before HR Changes
+## Baseline — Before HR Changes
 
 Before processing the employee lifecycle events,
 I verified that OrangeHRM and Authentik were synchronized.
