@@ -26,7 +26,7 @@ Validation was performed by comparing employee records in OrangeHRM against iden
 | Validation Checkpoint | Expected Result | Observed Result | Status |
 |---|---|---|---|
 | Initial baseline | 11 records, 0 findings | 11 records, 0 findings | PASS |
-| After HR changes | 13 records, 3 findings | 13 records, 3 findings | PASS |
+| After HR changes | 13 records, 3 findings | 13 records, 3 findings | PASS — Expected discrepancies detected |
 | Joiner automation | New hires provisioned; rehire enabled | Sam and Carol provisioned; Jessica reactivated | PASS |
 | Mover automation | Correct groups assigned; outdated groups removed | Illyana's old access removed after Python fix; Jessica's access restored | PASS |
 | Leaver automation | Terminated account disabled; groups removed | Billy's account disabled; department groups removed | PASS |
@@ -54,7 +54,7 @@ The initial dashboard confirmed that employee status and department access were 
 
 **Observed:** 13 records, 3 findings.
 
-**Result:** PASS
+**Result:** PASS — Expected discrepancies detected
 
 Five HR lifecycle events were introduced:
 
@@ -94,13 +94,19 @@ The Joiner workflow successfully handled new account provisioning and identity r
 
 **Result:** PASS after remediation
 
+
 ### Initial Security Finding
 
-Illyana Rasputin transferred from X-Men to Defenders but retained both department memberships.
+Illyana Rasputin transferred from X-Men to Defenders but retained access to both departments.
 
-**Incorrect Memberships:**
-- `dept-x-men`
-- `dept-defenders`
+**Current Group Memberships:**
+- `dept-x-men` — Outdated access
+- `dept-defenders` — Required access
+
+**Security Finding:** Access creep caused by retained membership in the previous department group.
+
+**Expected Result:** Remove `dept-x-men` while preserving `dept-defenders`.
+
 
 ### Root Cause
 
