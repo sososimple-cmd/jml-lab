@@ -64,7 +64,21 @@ The purpose was to recognize discrepancies before changing access:
 
 > The lab's expected checkpoint immediately after the five HR changes is **13 rows / 3 findings**; the two *No account yet* rows are not counted as findings. Extra pre-existing test accounts may change the row count.
 
-![Dashboard after HR changes — screenshot placeholder](screenshots/01-hr-changes-board.png)
+### Baseline — Before HR Changes
+
+Before processing the employee lifecycle events,
+I verified that OrangeHRM and Authentik were synchronized.
+
+**Initial validation: 11 rows, 0 findings.**
+
+ <img width="1769" height="676" alt="Screenshot 2026-10-10 094208" src="https://github.com/user-attachments/assets/c34edf0b-f38e-4375-9d01-80f7397fa227" />
+
+
+
+
+
+## Dashboard after HR changes  <img width="1701" height="701" alt="Screenshot 2026-10-10 102437" src="https://github.com/user-attachments/assets/338bdced-2a40-4828-804e-a0182c218939" />
+
 
 ## Automation design
 
