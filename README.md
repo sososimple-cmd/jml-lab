@@ -5,6 +5,35 @@
 
 Developed, executed, and troubleshot Python-based identity lifecycle workflows in a **simulated enterprise IAM environment**. The project aligns employee status and department assignments in OrangeHRM with account status and group membership in Authentik. It covers hiring, internal transfers, termination, and rehire—including the investigation and remediation of an access-creep finding within the lab.
 
+
+## Problem
+
+Organizations face security risks when employee access is not properly managed throughout the identity lifecycle. Changes in employment status, such as onboarding, department transfers, and terminations, can create discrepancies between HR records and identity provider permissions.
+
+These discrepancies introduce several security challenges:
+
+- **Access Creep:** Employees retain permissions from previous departments after transferring to new roles.
+- **Improper Provisioning:** New employees may not receive the correct access based on their department.
+- **Unauthorized Access:** Terminated employees may retain active accounts and group memberships.
+- **Identity Inconsistencies:** HR records and identity provider permissions may become misaligned.
+
+During this project, I identified an access-creep issue where an employee retained access to her previous department after transferring to a new department, violating least-privilege principles.
+
+## Solution
+
+I developed and troubleshot Python-based **Joiner-Mover-Leaver (JML) automation** to synchronize employee lifecycle changes between OrangeHRM and Authentik.
+
+The solution uses three Python scripts:
+
+- **Joiner (`joiner.py`):** Creates employee accounts and assigns department-based group memberships.
+- **Mover (`mover.py`):** Updates department assignments and removes outdated group memberships to prevent access creep.
+- **Leaver (`leaver.py`):** Deactivates terminated employee accounts and removes all associated group memberships.
+
+During validation, I discovered that the Mover script was not consistently removing outdated department access. I traced the issue to a Python removal loop positioned outside the employee iteration loop.
+
+After correcting the script, I reran the automation and verified that the employee's previous department access was successfully removed.
+
+
 ## Results at a glance
 
 | Validation checkpoint | Employee records | IAM findings |
